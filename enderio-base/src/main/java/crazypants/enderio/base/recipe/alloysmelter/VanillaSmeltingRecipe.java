@@ -10,8 +10,6 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 
-import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.IRecipe;
 import crazypants.enderio.base.recipe.MachineLevel;
@@ -27,22 +25,8 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@EventBusSubscriber(modid = EnderIO.MODID)
 public class VanillaSmeltingRecipe implements IMachineRecipe {
-
-  private static final @Nonnull VanillaSmeltingRecipe vanillaRecipe = new VanillaSmeltingRecipe();
-
-  public static @Nonnull VanillaSmeltingRecipe getInstance() {
-    return vanillaRecipe;
-  }
-
-  @SubscribeEvent
-  public static void create(EnderIOLifecycleEvent.PostInit.Pre event) {
-    MachineRecipeRegistry.instance.registerRecipe(vanillaRecipe);
-  }
 
   // Not a config because this would mess up the Simple Furnace if it was changed.
   private static final @Nonnull RecipeLevel RECIPE_LEVEL = RecipeLevel.SIMPLE;
@@ -52,9 +36,6 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
   // which produces ten RF per tick of burn time
   private static final int RF_PER_ITEM = TileEntityFurnace.getItemBurnTime(new ItemStack(Items.COAL, 1, 0)) * 10 / 8;
 
-  private VanillaSmeltingRecipe() {
-  }
-
   @Override
   public @Nonnull String getUid() {
     return "VanillaSmeltingRecipe";
@@ -62,7 +43,8 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
 
   @Override
   public int getEnergyRequired(@Nonnull NNList<MachineRecipeInput> inputs) {
-    return getNumInputs(inputs) * RF_PER_ITEM;
+    int numInputs = getNumInputs(inputs);
+    return numInputs * RF_PER_ITEM;
   }
 
   @Override
@@ -133,14 +115,10 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
 
   @Override
   public boolean isValidInput(@Nonnull RecipeLevel machineLevel, @Nonnull MachineRecipeInput input) {
-    return isValidInput(machineLevel, input.item);
-  }
-
-  public boolean isValidInput(@Nonnull RecipeLevel machineLevel, @Nonnull ItemStack input) {
     if (!machineLevel.canMake(RECIPE_LEVEL)) {
       return false;
     }
-    ItemStack itemstack = FurnaceRecipes.instance().getSmeltingResult(input);
+    ItemStack itemstack = FurnaceRecipes.instance().getSmeltingResult(input.item);
     return Prep.isValid(itemstack);
   }
 

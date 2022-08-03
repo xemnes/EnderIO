@@ -4,6 +4,7 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.base.recipe.alloysmelter.AlloyRecipeManager;
 import org.apache.commons.lang3.tuple.Triple;
 
 import com.enderio.core.common.Lang;
@@ -190,6 +191,7 @@ public class EnderIO implements IEnderIOAddon {
 
     SagMillRecipeManager.getInstance().create();
     SliceAndSpliceRecipeManager.getInstance().create();
+    AlloyRecipeManager.getInstance().create();
     VatRecipeManager.getInstance().create();
     PaintSourceValidator.instance.loadConfig();
 
@@ -242,10 +244,10 @@ public class EnderIO implements IEnderIOAddon {
     MinecraftForge.EVENT_BUS.post(proxy.getServerStartingEvent(event));
   }
 
-  @EventHandler
-  public static void onServerStarting(@Nonnull FMLModIdMappingEvent event) {
-    MinecraftForge.EVENT_BUS.post(new EnderIOLifecycleEvent.ModIdMappingEvent());
-  }
+//  @EventHandler
+//  public static void onServerStarting(@Nonnull FMLModIdMappingEvent event) {
+//    MinecraftForge.EVENT_BUS.post(new EnderIOLifecycleEvent.ModIdMappingEvent());
+//  }
 
   void processImc(ImmutableList<IMCMessage> messages) {
     for (IMCMessage msg : messages) {

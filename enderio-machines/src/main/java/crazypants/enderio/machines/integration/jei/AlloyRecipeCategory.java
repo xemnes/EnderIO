@@ -17,7 +17,6 @@ import crazypants.enderio.base.recipe.IManyToOneRecipe;
 import crazypants.enderio.base.recipe.IRecipe;
 import crazypants.enderio.base.recipe.RecipeOutput;
 import crazypants.enderio.base.recipe.alloysmelter.AlloyRecipeManager;
-import crazypants.enderio.base.recipe.alloysmelter.VanillaSmeltingRecipe;
 import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.config.config.AlloySmelterConfig;
 import crazypants.enderio.machines.config.config.PersonalConfig;
@@ -119,7 +118,7 @@ public class AlloyRecipeCategory extends BlankRecipeCategory<AlloyRecipeCategory
 
     private static boolean eq(@Nonnull ItemStack a, @Nonnull ItemStack b) {
       return a.getItem() == b.getItem()
-          && (a.getItemDamage() == b.getItemDamage() || a.getItemDamage() == OreDictionary.WILDCARD_VALUE || b.getItemDamage() == OreDictionary.WILDCARD_VALUE);
+              && (a.getItemDamage() == b.getItemDamage() || a.getItemDamage() == OreDictionary.WILDCARD_VALUE || b.getItemDamage() == OreDictionary.WILDCARD_VALUE);
     }
   }
 
@@ -132,13 +131,13 @@ public class AlloyRecipeCategory extends BlankRecipeCategory<AlloyRecipeCategory
     MachinesPlugin.iModRegistry.addRecipeCategories(new AlloyRecipeCategory(MachinesPlugin.iGuiHelper));
 
     setModes(MachinesPlugin.iModRegistry, AlloySmelterConfig.profileSimpleAlloy.get(), GuiAlloySmelter.Simple.class, ContainerAlloySmelter.Simple.class,
-        block_simple_alloy_smelter.getBlockNN(), 1);
+            block_simple_alloy_smelter.getBlockNN(), 1);
     setModes(MachinesPlugin.iModRegistry, AlloySmelterConfig.profileSimpleFurnace.get(), GuiAlloySmelter.Furnace.class, ContainerAlloySmelter.Furnace.class,
-        block_simple_furnace.getBlockNN(), 1);
+            block_simple_furnace.getBlockNN(), 1);
     setModes(MachinesPlugin.iModRegistry, AlloySmelterConfig.profileNormal.get(), GuiAlloySmelter.Normal.class, ContainerAlloySmelter.Normal.class,
-        block_alloy_smelter.getBlockNN(), 0);
+            block_alloy_smelter.getBlockNN(), 0);
     setModes(MachinesPlugin.iModRegistry, AlloySmelterConfig.profileEnhancedAlloy.get(), GuiAlloySmelter.Enhanced.class, ContainerAlloySmelter.Enhanced.class,
-        block_enhanced_alloy_smelter.getBlockNN(), 0);
+            block_enhanced_alloy_smelter.getBlockNN(), 0);
 
     long start = System.nanoTime();
 
@@ -154,7 +153,7 @@ public class AlloyRecipeCategory extends BlankRecipeCategory<AlloyRecipeCategory
       }
     }
     if (PersonalConfig.enableAlloySmelterFurnaceJEIRecipes.get()) {
-      for (IRecipe rec : VanillaSmeltingRecipe.getInstance().getAllRecipes()) {
+      for (IRecipe rec : AlloyRecipeManager.getInstance().getVanillaRecipe().getAllRecipes()) {
         result.add(new AlloyRecipeWrapper(rec));
       }
     }
@@ -166,27 +165,27 @@ public class AlloyRecipeCategory extends BlankRecipeCategory<AlloyRecipeCategory
   }
 
   private static void setModes(IModRegistry registry, @Nonnull AlloySmelterConfig.Profile profile, @Nonnull Class<? extends GuiContainer> gui,
-      @Nonnull Class<? extends Container> container, @Nonnull Block block, int offset) {
+                               @Nonnull Class<? extends Container> container, @Nonnull Block block, int offset) {
     String[] UIDS;
     switch (profile.get().getOperatingMode()) {
-    case ALL:
-      UIDS = new String[] { AlloyRecipeCategory.UID, VanillaRecipeCategoryUid.SMELTING };
-      break;
-    case ALLOY:
-      UIDS = new String[] { AlloyRecipeCategory.UID };
-      break;
-    case FURNACE:
-      UIDS = new String[] { VanillaRecipeCategoryUid.SMELTING };
-      break;
-    default:
-      return;
+      case ALL:
+        UIDS = new String[] { AlloyRecipeCategory.UID, VanillaRecipeCategoryUid.SMELTING };
+        break;
+      case ALLOY:
+        UIDS = new String[] { AlloyRecipeCategory.UID };
+        break;
+      case FURNACE:
+        UIDS = new String[] { VanillaRecipeCategoryUid.SMELTING };
+        break;
+      default:
+        return;
     }
 
     registry.addRecipeClickArea(gui, 155, 42, 16, 16, UIDS);
     registry.addRecipeCatalyst(new ItemStack(block), UIDS);
     for (int i = 0; i < UIDS.length; i++) {
       registry.getRecipeTransferRegistry().addRecipeTransferHandler(container, NullHelper.first(UIDS[i]), FIRST_RECIPE_SLOT, NUM_RECIPE_SLOT,
-          FIRST_INVENTORY_SLOT - offset, NUM_INVENTORY_SLOT);
+              FIRST_INVENTORY_SLOT - offset, NUM_INVENTORY_SLOT);
     }
   }
 

@@ -48,7 +48,13 @@ public class ImpulseRenderMapper implements IRenderMapper.IBlockRenderMapper, IR
       BlockImpulseHopper block) {
     List<IBlockState> states = new ArrayList<IBlockState>();
 
-    states.add(state.withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT));
+    boolean active = tileEntity.isActive();
+
+    if (active) {
+      states.add(state.withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT_ON));
+    } else {
+      states.add(state.withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT));
+    }
 
     return states;
   }

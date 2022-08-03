@@ -105,7 +105,8 @@ public class TileEnchanter extends AbstractMachineEntity implements ISidedInvent
     if (stack.isEmpty()) {
       return false;
     }
-    return MachineRecipeRegistry.instance.getRecipeForInput(getMachineLevel(), MachineRecipeRegistry.ENCHANTER, new MachineRecipeInput(slot, stack)) != null;
+    return !MachineRecipeRegistry.instance.getRecipesForInput(getMachineLevel(), MachineRecipeRegistry.ENCHANTER, new MachineRecipeInput(slot, stack))
+            .isEmpty();
   }
 
   @Override
@@ -118,7 +119,7 @@ public class TileEnchanter extends AbstractMachineEntity implements ISidedInvent
       return null;
     }
     return (EnchanterRecipe) MachineRecipeRegistry.instance.getRecipeForInputs(getMachineLevel(), MachineRecipeRegistry.ENCHANTER,
-        getInvAsMachineRecipeInput());
+            getInvAsMachineRecipeInput());
   }
 
   public int getCurrentEnchantmentCost() {

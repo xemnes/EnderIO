@@ -8,10 +8,13 @@ import com.enderio.core.api.common.util.IProgressTile;
 import crazypants.enderio.api.capacitor.ICapacitorKey;
 import crazypants.enderio.base.machine.baselegacy.AbstractPowerConsumerEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
+import crazypants.enderio.base.machine.interfaces.IPoweredTask;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.paint.IPaintable;
+import crazypants.enderio.base.paint.YetaUtil;
 import crazypants.enderio.base.power.PowerHandlerUtil;
 import crazypants.enderio.base.power.forge.tile.ILegacyPoweredTile;
+import crazypants.enderio.base.power.wireless.WirelessChargerController;
 import crazypants.enderio.base.recipe.RecipeLevel;
 import crazypants.enderio.machines.capacitor.CapacitorKey;
 import crazypants.enderio.util.Prep;
@@ -101,9 +104,10 @@ public class TileWiredCharger extends AbstractPowerConsumerEntity implements ILe
     return 1;
   }
 
+
   @Override
   public boolean isActive() {
-    return false;
+    return progress == 0 ? false : getProgress() >= 0 && hasPower();
   }
 
   @Override

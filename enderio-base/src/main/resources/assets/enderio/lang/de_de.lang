@@ -203,3 +203,4 @@ enderio.gui.item_filter.match_nbt=Beachte NBT
 enderio.gui.item_filter.ore_dic_disabled=Ignoriere Ore Dictionary
 enderio.gui.item_filter.ore_dic_enabled=Beachte Ore Dictionary
 enderio.gui.permission.denied=Keine Berechtigung
+

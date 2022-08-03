@@ -82,7 +82,7 @@ public abstract class GuiAlloySmelter<T extends TileAlloySmelter> extends GuiInv
     vanillaFurnaceTooltip.setIsVisible(mode.canSwitchProfiles());
 
     vanillaFurnaceButton = new IconButton(this, SMELT_MODE_BUTTON_ID, guiLeft + vanillaFurnaceTooltip.getBounds().x,
-        guiTop + vanillaFurnaceTooltip.getBounds().y, mode.getIcon());
+            guiTop + vanillaFurnaceTooltip.getBounds().y, mode.getIcon());
     vanillaFurnaceButton.visible = mode.canSwitchProfiles();
     vanillaFurnaceButton.setIconMargin(2, 2); // hack because icon size is bad
 

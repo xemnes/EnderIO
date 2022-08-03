@@ -41,6 +41,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @EventBusSubscriber(modid = EnderIOZoo.MODID)
 public class EntityLoveChild extends EntityZombie implements IEnderZooEntity.Aggressive {
 
+
   @SubscribeEvent
   public static void onEntityRegister(@Nonnull Register<EntityEntry> event) {
     LootTableList.register(new ResourceLocation(EnderIOZoo.DOMAIN, NAME));
@@ -127,6 +128,7 @@ public class EntityLoveChild extends EntityZombie implements IEnderZooEntity.Agg
 
   @Override
   public boolean attackEntityFrom(@Nonnull DamageSource source, float amount) {
+
     if (!isEntityInvulnerable(source) && super.attackEntityFrom(source, amount)) {
       if (source instanceof EntityDamageSource && source.getTrueSource() instanceof EntityPlayer
           && SwordHandler.isEquippedAndPowered((EntityPlayer) source.getTrueSource(), DarkSteelConfig.darkSteelSwordPowerUsePerHit)) {

@@ -28,6 +28,8 @@ public class TileImpulseHopper extends AbstractCapabilityMachineEntity {
   @Store
   private boolean isOutputLocked = false;
 
+  private boolean doSomething = false;
+
   private class PredicateItemStackMatch extends PredicateItemStack {
 
     private final int slot;
@@ -73,7 +75,7 @@ public class TileImpulseHopper extends AbstractCapabilityMachineEntity {
 
   @Override
   public boolean isActive() {
-    return hasPower() && redstoneCheckPassed;
+      return hasPower() && redstoneCheckPassed;
   }
 
   public boolean checkGhostSlot(int slot) {
@@ -122,7 +124,7 @@ public class TileImpulseHopper extends AbstractCapabilityMachineEntity {
       if (getEnergy().useEnergy()) {
         // (1) Check if we can do a copy operation
         int neededPower = 0;
-        boolean doSomething = false;
+
         for (int slot = 0; slot < SLOTS; slot++) {
           if (checkGhostSlot(slot)) {
             if (checkInputSlot(slot) && checkOutputSlot(slot)) {

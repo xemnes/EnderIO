@@ -96,6 +96,7 @@ public final class WirelessChargerController {
     if (res) {
       player.inventoryContainer.detectAndSendChanges();
     }
+    charger.updateEntityClient(res);
     IInventory baubles = BaublesUtil.instance().getBaubles(player);
     if (baubles != null) {
       for (int i = 0; i < baubles.getSizeInventory(); i++) {

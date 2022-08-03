@@ -1,15 +1,19 @@
 {
-  "elements": [
+	"__comment": "Designed by Xemnes with Cubik Studio - https://cubik.studio",
+	"textures": {
+		"side": "blocks/e_texture"
+	},
+	"elements": [ 	 
 		{
-		    "__comment": "north_west",
-		    "from": [ 0, 2, 0 ],
-		    "to": [ 2, 14, 2 ],
-		    "faces": {
-		        "north": { "uv": [ 14.001, 2.001, 15.999, 13.999 ], "texture": "#side", "cullface": "north" },
-		        "south": { "uv": [ 0.001, 2.001, 1.999, 13.999 ], "texture": "#side" },
-		        "west":  { "uv": [ 0.001, 2.001, 1.999, 13.999 ], "texture": "#side", "cullface": "west" },
-		        "east":  { "uv": [ 14.001, 2.001, 15.999, 13.999 ], "texture": "#side" }
-		    }
+			"__comment": "north_west",
+			"from": [ 0, 3, 0 ],
+			"to": [ 3, 13, 3 ],
+			"faces": {
+				"north": { "uv": [ 13, 3, 16, 13 ], "texture": "#side", "cullface": "north" },
+				"south": { "uv": [ 0, 3, 3, 13 ], "texture": "#side" },
+				"west": { "uv": [ 0, 3, 3, 13 ], "texture": "#side", "cullface": "west" },
+				"east": { "uv": [ 13, 3, 16, 13 ], "texture": "#side" }
+			}
 		}
-  ]
+	]
 }

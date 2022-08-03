@@ -90,7 +90,7 @@ public class TESRWiredCharger<T extends TileWiredCharger> extends ManagedTESR<T>
     GlStateManager.pushMatrix();
     IBakedModel ibakedmodel = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(itemstack, world, null);
     float f2 = ibakedmodel.getItemCameraTransforms().getTransform(ItemCameraTransforms.TransformType.GROUND).scale.y;
-    GlStateManager.translate(0, 0.25F * f2, 0);
+    GlStateManager.translate(0, 0.02F * f2, 0);
 
     double f3 = rot * (180F / (float) Math.PI);
     GlStateManager.rotate((float) f3, 0.0F, 1.0F, 0.0F);

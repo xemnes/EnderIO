@@ -1,5 +1,6 @@
 dependencies {
-  compile "appeng:appliedenergistics2:${ae_version}:api"
+//  compile "appeng:appliedenergistics2:${ae_version}:api"
+  deobfCompile "curse.maven:appliedenergistics2-223794:2652453"
 
   compile project(":enderio-base")
   compile project(":enderio-conduits")

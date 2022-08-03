@@ -123,7 +123,7 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
 
   /**
    * Computes the required amount of XP to start the current recipe.
-   * 
+   *
    * @return 0 if no XP is required, negative when more than required XP is stored.
    */
   private int getXPRequired() {
@@ -170,7 +170,7 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
     MachineRecipeInput newInput = new MachineRecipeInput(slot, item);
     int otherSlot = slot == 0 ? 1 : 0;
     if (Prep.isInvalid(getStackInSlot(otherSlot))) {
-      return MachineRecipeRegistry.instance.getRecipeForInput(getMachineLevel(), getMachineName(), newInput) != null;
+      return !MachineRecipeRegistry.instance.getRecipesForInput(getMachineLevel(), getMachineName(), newInput).isEmpty();
     } else {
       NNList<MachineRecipeInput> inputs = new NNList<>(newInput, new MachineRecipeInput(otherSlot, getStackInSlot(otherSlot)));
       return MachineRecipeRegistry.instance.getRecipeForInputs(getMachineLevel(), getMachineName(), inputs) != null;
@@ -185,7 +185,7 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
     int req = getXPRequired();
     if (dir != null && req > 0) {
       if (FluidWrapper.transfer(world, getPos().offset(dir), dir.getOpposite(), xpCont,
-          Math.min(XpUtil.experienceToLiquid(req), SoulBinderConfig.soulFluidInputRate.get())) > 0) {
+              Math.min(XpUtil.experienceToLiquid(req), SoulBinderConfig.soulFluidInputRate.get())) > 0) {
         setTanksDirty();
         return true;
       }
@@ -210,7 +210,7 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
 
   /**
    * Determines how much stored XP can/should be removed because it is not needed for the next recipe.
-   * 
+   *
    * @return A number between 0 and the amount of stored XP
    */
   private int getExcessXP() {

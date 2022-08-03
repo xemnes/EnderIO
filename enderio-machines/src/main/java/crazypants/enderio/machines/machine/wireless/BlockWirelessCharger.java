@@ -16,6 +16,7 @@ import crazypants.enderio.base.render.property.EnumRenderMode;
 import crazypants.enderio.base.render.registry.SmartModelAttacher;
 import crazypants.enderio.machines.config.config.ChargerConfig;
 import crazypants.enderio.machines.init.MachineObject;
+import crazypants.enderio.machines.machine.sagmill.TileSagMill;
 import crazypants.enderio.util.ClientUtil;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockFaceShape;
@@ -71,7 +72,7 @@ public class BlockWirelessCharger extends BlockNormalWirelessCharger
 
   protected void setBlockStateWrapperCache(@Nonnull IBlockStateWrapper blockStateWrapper, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
       @Nonnull TileWirelessCharger tileEntity) {
-    blockStateWrapper.addCacheKey(tileEntity.isActive());
+    blockStateWrapper.addCacheKey(tileEntity.isActive()).addCacheKey(tileEntity.isActiveTexture());
   }
 
   private @Nonnull BlockStateWrapperBase createBlockStateWrapper(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {

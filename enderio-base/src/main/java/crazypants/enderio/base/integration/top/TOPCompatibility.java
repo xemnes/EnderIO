@@ -28,17 +28,10 @@ import crazypants.enderio.base.transceiver.ChannelType;
 import crazypants.enderio.util.CapturedMob;
 import crazypants.enderio.util.NbtValue;
 import crazypants.enderio.util.Prep;
-import mcjty.theoneprobe.api.ElementAlignment;
-import mcjty.theoneprobe.api.ILayoutStyle;
-import mcjty.theoneprobe.api.IProbeConfig;
-import mcjty.theoneprobe.api.IProbeConfigProvider;
-import mcjty.theoneprobe.api.IProbeHitData;
-import mcjty.theoneprobe.api.IProbeHitEntityData;
-import mcjty.theoneprobe.api.IProbeInfo;
-import mcjty.theoneprobe.api.IProbeInfoProvider;
-import mcjty.theoneprobe.api.ITheOneProbe;
-import mcjty.theoneprobe.api.ProbeMode;
+import mcjty.theoneprobe.api.*;
+import mcjty.theoneprobe.rendering.RenderHelper;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -54,6 +47,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import static mcjty.theoneprobe.api.IProbeInfo.ENDLOC;
 import static mcjty.theoneprobe.api.IProbeInfo.STARTLOC;
+import static mcjty.theoneprobe.api.NumberFormat.COMPACT;
 
 public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInfoProvider, IProbeConfigProvider {
 
@@ -144,7 +138,7 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
 
     public IProbeInfo get() {
       if (eiobox == null) {
-        eiobox = probeinfo.vertical(probeinfo.defaultLayoutStyle().borderColor(0xffff0000));
+        eiobox = probeinfo.vertical(probeinfo.defaultLayoutStyle().borderColor(0x00ff0000));
       }
       return eiobox;
     }
@@ -334,8 +328,13 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
           rfLine = rfLine.vertical();
         }
         if (data.isPowered) {
-          rfLine.progress(data.rf, data.maxrf, eiobox.getProbeinfo().defaultProgressStyle().suffix(EnderIO.lang.localize("top.suffix.rf"))
-              .filledColor(0xffd63223).alternateFilledColor(0xffd63223));
+          rfLine.progress(data.rf, data.maxrf,
+                  eiobox.getProbeinfo()
+                  .defaultProgressStyle()
+                  .suffix(EnderIO.lang.localize("top.suffix.rf"))
+                  .filledColor(0xffb669d5)
+                  .alternateFilledColor(0xff8a49a5)
+                  .numberFormat(COMPACT));
         } else {
           rfLine.text(loc("top.machine.outofpower"));
         }
@@ -363,10 +362,10 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
         // We need to put the number of levels in as "current" value for it to be displayed as text. To make the progress bar scale to the partial level, we set
         // the "max" value in a way that is in the same ratio to the number of levels as the xp needed for the next level is to the current xp. If the bar
         // should be empty but we do have at least one level in, there will be a small error, as (levels/Integer.MAX_VALUE) > 0.
-        int scalemax = data.xpBarScaled > 0 ? data.experienceLevel * 100 / data.xpBarScaled : Integer.MAX_VALUE;
+        int scalemax = data.xpBarScaled > 0 ? data.experienceLevel * 100 / data.xpBarScaled : 320127979;
         eiobox.get().horizontal(eiobox.center()).item(new ItemStack(Items.EXPERIENCE_BOTTLE)).progress(data.experienceLevel, scalemax,
             eiobox.getProbeinfo().defaultProgressStyle().suffix(EnderIO.lang.localize("top.suffix.levels")).filledColor(0xff00FF0F)
-                .alternateFilledColor(0xff00AA0A).borderColor(0xff00AA0A));
+                .alternateFilledColor(0xff00AA0A));
       } else {
         eiobox.addMore();
       }
@@ -378,7 +377,7 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
       if (mode != ProbeMode.NORMAL || TopConfig.showItemCountDefault.get()) {
         eiobox.get().horizontal(eiobox.center()).item(new ItemStack(Blocks.CHEST)).progress(data.fillCur, data.fillMax,
             eiobox.getProbeinfo().defaultProgressStyle().suffix(EnderIO.lang.localize("top.suffix.items")).filledColor(0xfff8f83c)
-                .alternateFilledColor(0xffcfac0b).borderColor(0xffcfac0b));
+                .alternateFilledColor(0xffcfac0b));
       } else {
         eiobox.addMore();
       }
@@ -391,7 +390,9 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
         for (ITankData tank : data.tankData) {
           SmartTank smartTank = new SmartTank(1000);
           String content1;
-          String content2;
+          IProgressStyle content2 = null;
+          int content2current = 0;
+          int content2max = 0;
           final FluidStack fluid = tank.getContent();
           if (fluid != null) {
             FluidStack fluid2 = fluid.copy();
@@ -399,11 +400,26 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
             smartTank.setFluid(fluid2);
             content1 = NullHelper.first(fluid.getLocalizedName(), "(???)");
             // TODO lang-format those numbers
-            content2 = loc("top.tank.content", "" + fluid.amount, "" + tank.getCapacity());
+//            content2 = loc("top.tank.content", "" + fluid.amount, "" + tank.getCapacity());
+            content2 = eiobox.getProbeinfo()
+                            .defaultProgressStyle()
+                            .suffix("mB")
+                            .filledColor(0xff4671f5)
+                            .alternateFilledColor(0xff4671f5);
+            content2current = fluid.amount;
+            content2max = tank.getCapacity();
           } else {
+
+
             content1 = loc("top.tank.content.empty");
             // TODO lang-format those numbers
-            content2 = loc("top.tank.content", "0", "" + tank.getCapacity());
+            content2 = eiobox.getProbeinfo()
+                    .defaultProgressStyle()
+                    .suffix("mB")
+                    .filledColor(0xff4671f5)
+                    .alternateFilledColor(0xff4671f5);
+            content2current = 0;
+            content2max = tank.getCapacity();
           }
           switch (tank.getTankType()) {
           case INPUT:
@@ -420,8 +436,8 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
           ItemTankHelper.setTank(stack, smartTank);
           NbtValue.FAKE.setBoolean(stack, true);
 
-          eiobox.get().horizontal(eiobox.center()).item(stack).vertical(eiobox.getProbeinfo().defaultLayoutStyle().spacing(-1)).text(content1).text(content2);
-
+          eiobox.get().horizontal(eiobox.center()).item(stack).vertical(eiobox.getProbeinfo().defaultLayoutStyle().spacing(1)).progress(content2current, content2max, content2).textSmall(content1);
+          eiobox.get().vertical(eiobox.getProbeinfo().defaultLayoutStyle().spacing(-6));
         }
       } else {
         eiobox.addMore();

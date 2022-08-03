@@ -17,12 +17,14 @@ import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.machine.base.te.AbstractCapabilityMachineEntity;
 import crazypants.enderio.base.machine.base.te.EnergyLogic;
 import crazypants.enderio.base.machine.fakeplayer.FakePlayerEIO;
+import crazypants.enderio.base.machine.interfaces.IPoweredTask;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.recipe.RecipeLevel;
 import crazypants.enderio.machines.capacitor.CapacitorKey;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.util.NBTAction;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryCrafting;
@@ -34,6 +36,7 @@ import net.minecraftforge.common.ForgeHooks;
 
 @Storable
 public class TileCrafter extends AbstractCapabilityMachineEntity implements IPaintable.IPaintableTileEntity {
+
 
   public static class Simple extends TileCrafter {
 
@@ -111,7 +114,10 @@ public class TileCrafter extends AbstractCapabilityMachineEntity implements IPai
 
   @Override
   public boolean isActive() {
-    return false;
+    if (canCraft() && hasPower() && redstoneCheckPassed) {
+      return true;
+    }
+    else return false;
   }
 
   @Override

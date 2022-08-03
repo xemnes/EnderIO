@@ -47,7 +47,7 @@ public class WirelessRenderMapper implements IRenderMapper.IBlockRenderMapper, I
       BlockNormalWirelessCharger block) {
     List<IBlockState> states = new ArrayList<IBlockState>();
 
-    boolean active = tileEntity.isActive();
+    boolean active = tileEntity.isActiveTexture();
 
     if (active) {
       states.add(state.withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT_ON));

@@ -233,17 +233,17 @@ public class AnvilSubContainer {
                 int multiplier = 0;
 
                 switch (enchantment.getRarity()) {
-                case COMMON:
-                  multiplier = 1;
-                  break;
-                case UNCOMMON:
-                  multiplier = 2;
-                  break;
-                case RARE:
-                  multiplier = 4;
-                  break;
-                case VERY_RARE:
-                  multiplier = 8;
+                  case COMMON:
+                    multiplier = 1;
+                    break;
+                  case UNCOMMON:
+                    multiplier = 2;
+                    break;
+                  case RARE:
+                    multiplier = 4;
+                    break;
+                  case VERY_RARE:
+                    multiplier = 8;
                 }
 
                 if (applyingBook) {
@@ -368,36 +368,36 @@ public class AnvilSubContainer {
     }
 
     if (player.capabilities.isCreativeMode) {
-      return FuncUtil.runIfOrNN(parent.block, BlockDarkSteelAnvil::getUseEvent, 1030);
+      return FuncUtil.runIfNN(parent.block, BlockDarkSteelAnvil::getUseEvent, 1030);
     }
 
     IBlockState iblockstate = parent.target.read();
 
     if (iblockstate.getBlock() == Blocks.AIR) {
-      return FuncUtil.runIfOrNN(parent.block, BlockDarkSteelAnvil::getUseEvent, 1030);
+      return FuncUtil.runIfNN(parent.block, BlockDarkSteelAnvil::getUseEvent, 1030);
     }
 
     float breakChance = ForgeHooks.onAnvilRepair(player, stack, inputSlots.getStackInSlot(0), inputSlots.getStackInSlot(1));
     breakChance /= 0.12f; // normalize vanilla standard chance to 1.0
 
-    float damageChance = FuncUtil.runIfOrNN(parent.block, BlockDarkSteelAnvil::getDamageChance, 1f);
+    float damageChance = FuncUtil.runIfNN(parent.block, BlockDarkSteelAnvil::getDamageChance, 1f);
 
     if (player.getRNG().nextFloat() < (breakChance * damageChance)) {
       int l = iblockstate.getValue(BlockAnvil.DAMAGE) + 1;
       if (l > 2) {
         if (iblockstate.getBlock() == ModObject.blockDarkSteelAnvil.getBlockNN()) {
           parent.target
-              .write(ModObject.blockBrokenAnvil.getBlockNN().getDefaultState().withProperty(BlockAnvil.FACING, iblockstate.getValue(BlockAnvil.FACING)));
+                  .write(ModObject.blockBrokenAnvil.getBlockNN().getDefaultState().withProperty(BlockAnvil.FACING, iblockstate.getValue(BlockAnvil.FACING)));
         } else {
           parent.target.write(Blocks.AIR.getDefaultState());
         }
-        return FuncUtil.runIfOrNN(parent.block, BlockDarkSteelAnvil::getBreakEvent, 1029);
+        return FuncUtil.runIfNN(parent.block, BlockDarkSteelAnvil::getBreakEvent, 1029);
       } else {
         parent.target.write(iblockstate.withProperty(BlockAnvil.DAMAGE, l));
-        return FuncUtil.runIfOrNN(parent.block, BlockDarkSteelAnvil::getUseEvent, 1030);
+        return FuncUtil.runIfNN(parent.block, BlockDarkSteelAnvil::getUseEvent, 1030);
       }
     } else {
-      return FuncUtil.runIfOrNN(parent.block, BlockDarkSteelAnvil::getUseEvent, 1030);
+      return FuncUtil.runIfNN(parent.block, BlockDarkSteelAnvil::getUseEvent, 1030);
     }
 
   }

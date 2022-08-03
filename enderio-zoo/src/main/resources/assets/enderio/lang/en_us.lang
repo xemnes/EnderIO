@@ -12,3 +12,4 @@ entity.enderiozoo.lovechild.name=Ender Infected Zombie
 entity.enderiozoo.epicsquid.name=Epic Squid
 entity.enderiozoo.voidslime.name=Infinity Spawn
 
+death.attack.enderiozoo.lovechild=test

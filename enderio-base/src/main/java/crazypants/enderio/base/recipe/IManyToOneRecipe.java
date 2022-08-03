@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 
 public interface IManyToOneRecipe extends IRecipe {
 
-  boolean isValidRecipeComponents(@Nonnull NNList<ItemStack> input);
+  boolean isValidRecipeComponents(ItemStack... items);
 
   @Nonnull
   ItemStack getOutput();

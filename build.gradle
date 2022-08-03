@@ -104,7 +104,6 @@ allprojects {
         maven { url = "http://maven.tterrag.com" }
         maven { url = "http://maven2.tterrag.com" }
         maven { url = "http://dvs1.progwml6.com/files/maven" }
-        maven { url = "http://files.minecraftforge.net/maven" }
         maven { url = "http://maven.cil.li/" } // OpenComputers
         maven { url = "http://maven.ic2.player.to" }
         maven { url = "https://maven.mcmoddev.com" } // ???, dead as of 2021-01-10, back as of 2021-05-24
@@ -151,6 +150,10 @@ allprojects {
         testCompile("org.junit.jupiter:junit-jupiter-api:5.2.0")
         testCompile("org.junit.platform:junit-platform-launcher:1.1.0")
         testRuntime("org.junit.jupiter:junit-jupiter-engine:5.2.0")
+
+        compile files("E:/.minecraft/realmofstorms/source files/TheOneProbe/build/libs/theoneprobe-1.12-1.4.28-deobf.jar")
+        runtimeOnly files("E:/.minecraft/realmofstorms/source files/TOPAddons/build/libs/topaddons-1.12.2-1.13.0.jar")
+
 
         if (project.name != 'ap') {
             annotationProcessor project(':ap')

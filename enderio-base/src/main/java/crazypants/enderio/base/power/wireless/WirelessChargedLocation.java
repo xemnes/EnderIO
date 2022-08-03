@@ -32,8 +32,13 @@ public class WirelessChargedLocation implements Comparator<IWirelessCharger> {
 
   public boolean chargeItems(@Nonnull NonNullList<ItemStack> items) {
     for (IWirelessCharger wc : getChargers()) {
-      if (wc.chargeItems(items) && wc.forceSingle()) {
-        return true;
+      if (wc.chargeItems(items)) {
+        wc.updateEntityClient(true);
+        if (wc.forceSingle()) {
+          return true;
+        }
+      } else {
+        wc.updateEntityClient(false);
       }
     }
     return false;

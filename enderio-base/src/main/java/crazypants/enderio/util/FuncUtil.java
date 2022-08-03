@@ -43,6 +43,10 @@ public final class FuncUtil {
     return NullHelper.first(source == null ? null : getter.apply(source), defaultValue);
   }
 
+  public static @Nonnull <F, E> E runIfNN(@Nullable F source, FunctionNN<F, E> getter, @Nonnull E defaultValue) {
+    return NullHelper.first(source == null ? null : getter.apply(source), defaultValue);
+  }
+
   public static @Nonnull <F, E> E runIfOrSupNN(@Nullable F source, FunctionNN<F, E> getter, @Nonnull Supplier<E> defaultValue) {
     return NullHelper.first(source == null ? null : getter.apply(source), defaultValue.get());
   }

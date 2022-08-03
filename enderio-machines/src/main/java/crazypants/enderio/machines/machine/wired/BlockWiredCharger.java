@@ -54,6 +54,7 @@ public class BlockWiredCharger<T extends TileWiredCharger> extends AbstractPower
       @Override
       @SideOnly(Side.CLIENT)
       public void bindTileEntitySpecialRenderer() {
+        ClientRegistry.bindTileEntitySpecialRenderer(TileWiredCharger.Enhanced.class, new TESRWiredChargerEnhanced<>(null));
       }
 
     };
@@ -111,6 +112,7 @@ public class BlockWiredCharger<T extends TileWiredCharger> extends AbstractPower
   @Override
   protected void setBlockStateWrapperCache(@Nonnull IBlockStateWrapper blockStateWrapper, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
       @Nonnull TileWiredCharger tileEntity) {
+    blockStateWrapper.addCacheKey(tileEntity.isActive());
   }
 
   @Override

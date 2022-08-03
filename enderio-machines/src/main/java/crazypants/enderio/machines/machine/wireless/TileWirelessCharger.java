@@ -7,6 +7,7 @@ import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.TileEntityEio;
+import crazypants.enderio.base.diagnostics.Prof;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.paint.YetaUtil;
 import crazypants.enderio.base.power.PowerHandlerUtil;
@@ -20,6 +21,7 @@ import crazypants.enderio.machines.capacitor.CapacitorKey;
 import crazypants.enderio.machines.config.config.ChargerConfig;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.util.NBTAction;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
@@ -35,8 +37,19 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @Storable
 public class TileWirelessCharger extends TileEntityEio implements ILegacyPoweredTile.Receiver, IWirelessCharger, IPaintable.IPaintableTileEntity, IRanged {
 
+  // Client sync monitoring
+  protected int ticksSinceSync = -1;
+  protected boolean updateClients = false;
+  protected boolean lastActive;
+  protected int ticksSinceActiveChanged = 0;
+
   @Store
   private int storedEnergyRF;
+
+  // @Store
+  // private boolean chargedItem = false;
+  @Store
+  private boolean charging = false;
 
   private boolean registered = false;
 
@@ -64,14 +77,21 @@ public class TileWirelessCharger extends TileEntityEio implements ILegacyPowered
     if (!registered) {
       WirelessChargerController.registerCharger(this);
       registered = true;
-      disableTicking();
     }
+
+    if (charging) {
+      if (++ticksSinceActiveChanged == 20) {
+        updateEntityClient(false);
+      }
+    }
+
+
   }
 
   @Override
   public boolean chargeItems(NonNullList<ItemStack> stacks) {
-    boolean chargedItem = false;
     int available = Math.min(CapacitorKey.WIRELESS_POWER_OUTPUT.getDefault(), storedEnergyRF);
+    boolean active = false;
     for (int i = 0, end = stacks.size(); i < end && available > 0; i++) {
       ItemStack stack = stacks.get(i);
       if (stack.getCount() == 1 && shouldChargeWirelessly(stack)) {
@@ -84,14 +104,39 @@ public class TileWirelessCharger extends TileEntityEio implements ILegacyPowered
             int used = chargable.receiveEnergy(canUse, false);
             if (used > 0) {
               storedEnergyRF = storedEnergyRF - used;
-              chargedItem = true;
+              if (!world.isRemote) {
+                active = true;
+              }
               available -= used;
             }
           }
         }
       }
     }
-    return chargedItem;
+    return active;
+  }
+
+  @Override
+  public void updateEntityClient(boolean active) {
+    if (this.charging != active) {
+      ticksSinceActiveChanged = 0;
+      this.charging = active;
+      updateBlock();
+      YetaUtil.refresh(this);
+    }
+    // check if the block on the client needs to update its texture
+    /*
+    if (isActiveTexture() != lastActive) {
+      ticksSinceActiveChanged++;
+      if (lastActive ? ticksSinceActiveChanged > 20 : ticksSinceActiveChanged > 4) {
+        ticksSinceActiveChanged = 0;
+        lastActive = isActiveTexture();
+        updateBlock();
+      }
+    } else {
+      ticksSinceActiveChanged = 0;
+    }
+     */
   }
 
   private static boolean shouldChargeWirelessly(ItemStack stack) {
@@ -148,6 +193,10 @@ public class TileWirelessCharger extends TileEntityEio implements ILegacyPowered
   @Override
   public boolean isActive() {
     return true;
+  }
+
+  public boolean isActiveTexture() {
+    return charging;
   }
 
   @Nonnull

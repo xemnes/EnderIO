@@ -30,13 +30,13 @@ public class BasicManyToOneRecipe implements IManyToOneRecipe {
   }
 
   @Override
-  public boolean isValidRecipeComponents(@Nonnull NNList<ItemStack> input) {
+  public boolean isValidRecipeComponents(ItemStack... items) {
     if (dedupeInput) {
       return false;
     }
 
     NNList<IRecipeInput> inputs = new NNList<>(recipe.getInputs());
-    for (ItemStack is : input) {
+    for (ItemStack is : items) {
       if (is != null && Prep.isValid(is)) {
         IRecipeInput remove = null;
         for (IRecipeInput ri : inputs) {

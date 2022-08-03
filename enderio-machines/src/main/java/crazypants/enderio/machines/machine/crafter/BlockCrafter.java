@@ -86,7 +86,7 @@ public class BlockCrafter<T extends TileCrafter> extends AbstractMachineBlock<T>
   @Override
   protected void setBlockStateWrapperCache(@Nonnull IBlockStateWrapper blockStateWrapper, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
       @Nonnull TileCrafter tileEntity) {
-    blockStateWrapper.addCacheKey(tileEntity.getFacing());
+    blockStateWrapper.addCacheKey(tileEntity.getFacing()).addCacheKey(tileEntity.isActive());;
   }
 
 }

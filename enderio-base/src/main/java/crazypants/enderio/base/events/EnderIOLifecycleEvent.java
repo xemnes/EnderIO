@@ -98,9 +98,9 @@ public abstract class EnderIOLifecycleEvent extends Event {
 
   }
 
-  public static class ModIdMappingEvent extends EnderIOLifecycleEvent {
-
-  }
+//  public static class ModIdMappingEvent extends EnderIOLifecycleEvent {
+//
+//  }
 
   public abstract static class ServerStarting extends EnderIOLifecycleEvent {
 

@@ -7,10 +7,11 @@ dependencies {
 	deobfCompile("cofh:CoFHCore:${cofhcore_version}:universal") {
 		transitive = false // We don't need RF nor JEI, thank you very much
 	}
-	
-	compile("mcjty.theoneprobe:TheOneProbe-1.12:${top_version}:api") {
-		transitive = false // Why does TOP API pull in RF? The world may never know...
-	}
+
+//	compile("mcjty.theoneprobe:TheOneProbe-1.12:${top_version}:api") {
+//		transitive = false // Why does TOP API pull in RF? The world may never know...
+//	}
+
 	compile "com.mod-buildcraft:buildcraft-api:${buildcraft_version}"
 	
 	compile "info.loenwind.autosave:AutoSave:${minecraft_version}-${autosave_version}"

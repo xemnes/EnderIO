@@ -38,6 +38,11 @@ public interface IWirelessCharger {
    */
   boolean forceSingle();
 
+  // Temp
+  default void updateEntityClient(boolean active) {
+
+  }
+
   /**
    * Messaging exception that tells the calling code that the charger should be (and potentially already has been!) removed from the list of chargers.
    * <p>
